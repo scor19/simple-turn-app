@@ -29,7 +29,3 @@ This application allows medical professionals to efficiently manage their appoin
 - **Modularization**: The modularization of the application is a work in progress and may require further refinement for better organization and scalability.
 
 Feel free to explore and use the Medical Appointment Management App for your practice or project needs. Contributions and feedback are welcome!
-
----
-
-Feel free to adjust the content according to your specific application and preferences. Let me know if you need further assistance!
