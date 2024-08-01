@@ -54,17 +54,8 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
             />
             <Text style={[styles.patientName]}>{name}</Text>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-            <AntDesign
-              name="clockcircleo"
-              size={24}
-              color="black"
-              style={{ marginRight: 10 }}
-            />
-            <Text style={[styles.patientName]}>{appointment}</Text>
-          </View>
         </View>
-        <View style={{ marginTop: 5 }}>
+        <View style={{ marginTop: 5, marginBottom: 10 }}>
           {expanded ? null : <Text>Press to see details</Text>}
           <Collapsible collapsed={!expanded}>
             <Text>{email}</Text>
@@ -73,33 +64,50 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
             <Text>{record}</Text>
           </Collapsible>
         </View>
-        <View style={{ flexDirection: 'row-reverse' }}>
-          <TouchableOpacity
-            onPress={() =>
-              Alert.alert('Delete', 'Are you sure?', [
-                { text: 'OK', onPress: () => handleDelete() },
-                {
-                  text: 'Cancel',
-                  onPress: () => console.log('Cancel Pressed'),
-                },
-              ])
-            }
-          >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <View style={{ flexDirection: 'row' }}>
             <AntDesign
-              name="delete"
+              name="calendar"
               size={24}
               color="black"
-              style={styles.icon}
+              style={{ marginRight: 10 }}
             />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleEditPress}>
-            <AntDesign
-              name="edit"
-              size={24}
-              color="black"
-              style={styles.icon}
-            />
-          </TouchableOpacity>
+            <Text style={[styles.patientName]}>{appointment}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              onPress={() =>
+                Alert.alert('Delete', 'Are you sure?', [
+                  { text: 'OK', onPress: () => handleDelete() },
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                  },
+                ])
+              }
+            >
+              <AntDesign
+                name="delete"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleEditPress}>
+              <AntDesign
+                name="edit"
+                size={24}
+                color="black"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </TouchableOpacity>
     </View>

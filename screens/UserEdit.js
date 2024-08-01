@@ -1,127 +1,40 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Keyboard,
-  Alert,
-  KeyboardAvoidingView,
-} from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
 import { styles } from '../styles/Styles';
-import db from '../database/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import DateTimePicker from 'react-native-modal-datetime-picker';
 import { editSchema } from '../services/FormValidation';
+import InputField from '../components/InputField';
+import DatePicker from '../components/DatePicker';
+import {
+  fetchPatientData,
+  updatePatientData,
+} from '../services/patientService';
 import { AntDesign } from '@expo/vector-icons';
+import { yupResolver } from '@hookform/resolvers/yup';
+import TurnLoader from '../components/TurnLoader';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 
 const UserEdit = ({ route }) => {
-  const [patient, setPatient] = useState({
-    accountEmail: '',
-    name: '',
-    email: '',
-    phone: '',
-    appointment: '',
-    reason: '',
-    record: '',
-  });
+  const [patient, setPatient] = useState({});
   const { userId } = route.params;
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchPatientData = async () => {
-      const patientRef = doc(db, 'patient', userId);
-
-      try {
-        const docSnapshot = await getDoc(patientRef);
-        if (docSnapshot.exists()) {
-          const patientData = docSnapshot.data();
-          setPatient({
-            id: docSnapshot.id,
-            accountEmail: patientData.accountEmail,
-            appointment: patientData.appointment,
-            email: patientData.email,
-            name: patientData.name,
-            phone: patientData.phone,
-            reason: patientData.reason,
-            record: patientData.record,
-          });
-          reset({
-            name: patientData.name,
-            email: patientData.email,
-            phone: patientData.phone,
-            appointment: patientData.appointment,
-            reason: patientData.reason,
-            record: patientData.record,
-          });
-        } else {
-          // El documento no existe
-          console.log('El paciente no existe en la base de datos.');
-        }
-      } catch (error) {
-        console.error('Error al obtener los datos del paciente', error);
+    const loadPatientData = async () => {
+      const data = await fetchPatientData(userId);
+      if (data) {
+        setPatient(data);
+        reset(data);
       }
     };
-    fetchPatientData(); // Llama a la función asíncrona para cargar los datos
+    loadPatientData();
   }, [userId]);
 
   const handleGoBack = () => {
-    console.log('Go back');
     navigation.goBack();
   };
 
-  // Manejo de estados para la librería de fechas
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [formattedDate, setDate] = useState('');
-
-  // Define si se muestra el selector de fecha y hora
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  // Confirma la fecha y hora seleccionada, la envía a la función formatDate
-  const handleConfirm = (date) => {
-    console.log('Raw time: ', date);
-    formatDate(date);
-    hideDatePicker();
-  };
-
-  // Formato a la selección de fecha seleccionada para mostrarla en la screen
-  const formatDate = (rawDate) => {
-    let date = new Date(rawDate);
-
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-    let hour = date.getHours();
-    let minute = date.getMinutes();
-
-    if (minute < 10) {
-      minute = `0${minute}`;
-    } else {
-      minute = `${minute}`;
-    }
-
-    if (hour < 10) {
-      hour = `0${hour}`;
-    } else {
-      hour = `${hour}`;
-    }
-
-    setDate(`${year}-${month}-${day} ${hour}:${minute}`);
-
-    console.log(`Formated time: ${day}-${month}-${year} at ${hour}:${minute}`);
-    return `${day}-${month}-${year}`;
-  };
-
-  // Define el hook de formularios de react
   const {
     control,
     handleSubmit,
@@ -129,242 +42,152 @@ const UserEdit = ({ route }) => {
     formState: { errors },
   } = useForm({
     defaultValues: patient,
-    resolver: yupResolver(editSchema), // Especifica el resolver para la validación de los inputs
+    resolver: yupResolver(editSchema),
   });
 
-  // Envía los datos a firestore
-  const editPatient = async (dataToSubmit) => {
-    console.log('Submitted data:', dataToSubmit);
-    console.log('Update patient~');
+  const editPatient = async (data) => {
     try {
-      await updateDoc(doc(db, 'patient', patient.id), dataToSubmit);
+      await updatePatientData(patient.id, data);
       Alert.alert(
-        'Patient updated succesfully',
+        'Patient updated successfully',
         'The patient was updated in the database',
-        [{ text: 'OK', onPress: () => navigation.goBack() }]
+        [{ text: 'OK', onPress: handleGoBack }]
       );
-      setDate('');
     } catch (error) {
       console.error('Error saving the patient', error);
     }
   };
 
-  // Revisa si se cambió la fecha y añade la fecha ya formatteada
-  // Oculta el teclado cuando se presiona "save"
   const onSubmit = (data) => {
-    console.log('onSubmit data:', data);
-    dataToSubmit = {
-      ...data,
-      appointment: formattedDate,
-      accountEmail: patient.accountEmail,
-    };
-    dataToSubmit.appointment
-      ? ''
-      : (dataToSubmit.appointment = patient.appointment);
-    editPatient(dataToSubmit);
+    data.appointment = data.appointment || patient.appointment;
+    data.accountEmail = patient.accountEmail;
+    editPatient(data);
     Keyboard.dismiss();
   };
 
   return (
-    <View style={[styles.container, { justifyContent: 'center' }]}>
-      <Text style={styles.textTitle}>Edit appointment</Text>
-      <Text style={styles.textTitleSub}>Patient info</Text>
-      <KeyboardAvoidingView behavior="padding">
-      <View>
-        <Text style={styles.textPlaceholder}>Name</Text>
-        <Controller
-          name="name"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <View style={styles.inputSingle}>
-              <AntDesign name="right" size={20} color={'#50bb52'} />
-              <TextInput
-                placeholder={patient.name}
-                onChangeText={field.onChange}
-                value={field.value}
-                defaultValue=""
-              />
-            </View>
-          )}
-        />
-        {errors.name && (
-          <Text style={styles.textError}>{errors.name.message}</Text>
-        )}
-      </View>
-      <View>
-        <Text style={styles.textPlaceholder}>Email (optional)</Text>
-        <Controller
-          name="email"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <View style={styles.inputSingle}>
-              <AntDesign name="right" size={20} color="#50bb52" />
-              <TextInput
-                placeholder={patient.email}
-                onChangeText={field.onChange}
-                value={field.value}
-                defaultValue=""
-              />
-            </View>
-          )}
-        />
-        {errors.email && (
-          <Text style={styles.textError}>{errors.email.message}</Text>
-        )}
-      </View>
-      <View>
-        <Text style={styles.textPlaceholder}>Phone number</Text>
-        <Controller
-          name="phone"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <View style={styles.inputSingle}>
-              <AntDesign name="right" size={20} color="#50bb52" />
-              <TextInput
-                placeholder={patient.phone}
-                onChangeText={field.onChange}
-                value={field.value}
-                defaultValue=""
-              />
-            </View>
-          )}
-        />
-        {errors.phone && (
-          <Text style={styles.textError}>{errors.phone.message}</Text>
-        )}
-      </View>
-      <View>
-        <Text style={styles.textPlaceholder}>Appointment date</Text>
-        <Controller
-          name="appointment"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <View style={[styles.inputSingle, { paddingVertical: 10 }]}>
-              <TouchableOpacity
-                style={{ flexDirection: 'row', width: '100%' }}
-                onPress={showDatePicker}
-              >
-                <AntDesign
-                  name="calendar"
-                  size={20}
-                  color="#50bb52"
-                  style={{ marginRight: 5 }}
-                />
-                <Text style={{ color: '#A9A9A9' }}>
-                  {formattedDate ? formattedDate : patient.appointment}
-                </Text>
-                <DateTimePicker
-                  isVisible={isDatePickerVisible}
-                  mode="datetime"
-                  onChange={(e) => {
-                    field.onChange(e);
-                  }}
-                  minimumDate={new Date()}
-                  selected={field.value}
-                  onConfirm={handleConfirm}
-                  onCancel={hideDatePicker}
-                  defaultValue=""
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-        {errors.appointment && (
-          <Text style={styles.textError}>{errors.appointment.message}</Text>
-        )}
-      </View>
-      <View>
-        <Text style={styles.textPlaceholder}>Appointment reason</Text>
-        <Controller
-          name="reason"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <View style={styles.inputSingle}>
-              <AntDesign name="right" size={20} color="#50bb52" />
-              <TextInput
-                placeholder={patient.reason}
-                onChangeText={field.onChange}
-                value={field.value}
-                defaultValue=""
-              />
-            </View>
-          )}
-        />
-        {errors.reason && (
-          <Text style={styles.textError}>{errors.reason.message}</Text>
-        )}
-      </View>
-      <View>
-        <Text style={styles.textPlaceholder}>Record (optional)</Text>
-        <Controller
-          name="record"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <View style={styles.inputSingle}>
-              <AntDesign name="right" size={20} color="#50bb52" />
-              <TextInput
-                placeholder={patient.record}
-                onChangeText={field.onChange}
-                value={field.value}
-                defaultValue=""
-              />
-            </View>
-          )}
-        />
-        {errors.record && (
-          <Text style={styles.textError}>{errors.record.message}</Text>
-        )}
-      </View>
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity
-          type="submit"
-          onPress={handleSubmit(onSubmit)}
-          style={[
-            styles.inputElevation,
-            { backgroundColor: '#50bb52', padding: 10, borderRadius: 15 },
-          ]}
-        >
-          <Text
-            style={{ color: '#fff', alignSelf: 'center', fontWeight: 'bold' }}
+    <>
+      <View style={[styles.container, { justifyContent: 'center' }]}>
+          <View
+            style={{
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+            }}
           >
-            Save
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity
-          onPress={handleGoBack}
-          style={[
-            styles.inputElevation,
-            {
-              backgroundColor: '#50bb52',
-              padding: 10,
-              borderRadius: 15,
-              flexDirection: 'row',
-            },
-          ]}
-        >
-          <AntDesign
-            name="back"
-            size={24}
-            color="white"
-            style={styles.iconLeft}
+            <AntDesign name="edit" size={96} color="#50bb52" />
+            <Text
+              style={[
+                styles.textTitle,
+                { alignSelf: 'center', marginBottom: 10 },
+              ]}
+            >
+              Edit appointment
+            </Text>
+          </View>
+          <InputField
+            name="name"
+            control={control}
+            label="Name"
+            placeholder={patient.name || 'Name'}
+            errors={errors}
+            icon="right"
           />
-          <Text
-            style={{ color: '#fff', alignSelf: 'center', fontWeight: 'bold' }}
-          >
-            Go back
-          </Text>
-        </TouchableOpacity>
+          <InputField
+            name="email"
+            control={control}
+            label="Email"
+            placeholder={patient.email || 'Email (optional)'}
+            errors={errors}
+            icon="right"
+          />
+          <InputField
+            name="phone"
+            control={control}
+            label="Phone"
+            placeholder={patient.phone || 'Phone number'}
+            errors={errors}
+            icon="right"
+          />
+          <DatePicker
+            name="appointment"
+            control={control}
+            label="Appointment date"
+            placeholder={patient.appointment || 'Appointment date'}
+            errors={errors}
+          />
+          <InputField
+            name="reason"
+            control={control}
+            label="Reason"
+            placeholder={patient.reason || 'Appointment reason'}
+            errors={errors}
+            icon="right"
+          />
+          <InputField
+            name="record"
+            control={control}
+            label="Record"
+            placeholder={patient.record || 'Record (optional)'}
+            errors={errors}
+            icon="right"
+          />
+
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              onPress={handleSubmit(onSubmit)}
+              style={[
+                styles.inputElevation,
+                { backgroundColor: '#50bb52', padding: 10, borderRadius: 15 },
+              ]}
+            >
+              <Text
+                style={{
+                  color: '#fff',
+                  alignSelf: 'center',
+                  fontWeight: 'bold',
+                }}
+              >
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              onPress={handleGoBack}
+              style={[
+                styles.inputElevation,
+                {
+                  backgroundColor: '#50bb52',
+                  padding: 10,
+                  borderRadius: 15,
+                  flexDirection: 'row',
+                },
+              ]}
+            >
+              <AntDesign
+                name="back"
+                size={24}
+                color="white"
+                style={styles.iconLeft}
+              />
+              <Text
+                style={{
+                  color: '#fff',
+                  alignSelf: 'center',
+                  fontWeight: 'bold',
+                }}
+              >
+                Go back
+              </Text>
+            </TouchableOpacity>
+          </View>
+
       </View>
-      </KeyboardAvoidingView>
-    </View>
+      {/* <TurnLoader /> */}
+    </>
   );
 };
 

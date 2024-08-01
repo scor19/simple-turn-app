@@ -42,8 +42,17 @@ const SignUp = () => {
         { text: 'OK', onPress: () => navigation.replace('Login') },
       ]);
     } catch (error) {
-      console.log(error);
-      Alert.alert('Sign up failed:', error.message);
+      console.log(error.code);
+      if (error.code === 'auth/invalid-email') {
+        Alert.alert('Sign up failed:', 'Please enter a valid email');
+      } else if (error.code === 'auth/email-already-in-use') {
+        Alert.alert('Sign up failed:', 'Email already in use');
+      } else if (error.code === 'auth/weak-password') {
+        Alert.alert(
+          'Sign up failed:',
+          'Password is too weak, enter at least 6 characters'
+        );
+      }
     }
     FIREBASE_AUTH.signOut();
   };
