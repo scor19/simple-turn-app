@@ -1,6 +1,6 @@
-# Medical Appointment Management App
+# Schedule Time App
 
-Welcome to the Medical Appointment Management App repository!
+Welcome to the Schedule Time App repository!
 
 This application allows medical professionals to efficiently manage their appointments by creating accounts and scheduling appointments for their patients. It provides a user-friendly interface for doctors to input appointment dates and patient information, such as phone numbers, emails, names, and previous medical conditions. This version of the app utilizes Firestore as the database, while another version uses MySQL with a backend in Node.js and Express.
 
@@ -19,10 +19,10 @@ This application allows medical professionals to efficiently manage their appoin
 
 ## Installation
 
-1. **Clone Repository**: Clone this repository to your local machine using `git clone https://github.com/your-username/simple-turn-app.git`.
+1. **Clone Repository**: Clone this repository to your local machine using `git clone https://github.com/scor19/simple-turn-app.git`.
 2. **Install Dependencies**: Navigate to the project directory and install dependencies using `npm install`.
-3. **Set Up Firestore**: Set up Firestore database and configure credentials. Update Firestore configuration in `src/firebase/firebase.js` with your credentials.
-4. **Start Application**: Start the application using `npm start`. The app will be served at `http://localhost:3000`.
+3. **Set Up Firestore**: Set up Firestore database and configure credentials. Update Firestore configuration in `src/database/firebase.js` with your credentials.
+4. **Start Application**: Start the application using `npm start`. The app will be served at your android emulator.
 
 ## Notes
 
