@@ -54,14 +54,20 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
             />
             <Text style={[styles.patientName]}>{name}</Text>
           </View>
+          <AntDesign
+            name={expanded ? 'down' : 'left'}
+            size={24}
+            color="black"
+            style={styles.icon}
+          />
         </View>
         <View style={{ marginTop: 5, marginBottom: 10 }}>
-          {expanded ? null : <Text>Press to see details</Text>}
+          {expanded ? null : <Text style={styles.patientDetail}>{reason}</Text>}
           <Collapsible collapsed={!expanded}>
-            <Text>{email}</Text>
-            <Text>{phone}</Text>
-            <Text style={styles.patientReason}>{reason}</Text>
-            <Text>{record}</Text>
+            <Text style={styles.patientDetail}>{email}</Text>
+            <Text style={styles.patientDetail}>{phone}</Text>
+            <Text style={styles.patientDetail}>{reason}</Text>
+            <Text style={styles.patientDetail}>{record}</Text>
           </Collapsible>
         </View>
         <View

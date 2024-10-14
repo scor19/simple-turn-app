@@ -54,7 +54,7 @@ const WelcomeScreen = () => {
                   {'\n'}
                   {'\n'}
                   You can also see and edit your appointments at any time. Just
-                  press "Turns" on your tab bar.
+                  press "Appointments" on your tab bar.
                 </Text>
                 <View style={[styles.buttonGroup, { flexDirection: 'row' }]}>
                   <TouchableOpacity

@@ -26,9 +26,10 @@ const Drawer = () => {
         },
         tabBarActiveTintColor: '#50bb52',
         tabBarInactiveTintColor: 'gray',
+        headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={WelcomeScreen} />
+      <Tab.Screen name="Home" component={WelcomeScreen}/>
       <Tab.Screen name="Add patient" component={CreatePatientScreen} />
       <Tab.Screen name="Appointments" component={TurnList} />
     </Tab.Navigator>

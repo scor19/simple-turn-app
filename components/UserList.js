@@ -53,6 +53,7 @@ const UserList = () => {
           justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
+          marginTop: 20,
         }}
       >
         <AntDesign

@@ -155,6 +155,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  patientDetail: {
+    padding: 10,
+    borderColor: '#cccccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: 'white',
+    marginVertical: 5,
   }
 });
 
