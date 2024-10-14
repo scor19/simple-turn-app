@@ -1,4 +1,7 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FIREBASE_AUTH } from '../database/firebase';
@@ -30,3 +33,12 @@ export const saveEmail = async (data) => {
     console.log(error);
   }
 };
+
+export const resetEmail = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log('Password reset email sent: ', email);
+  } catch (error) {
+    console.log(error);
+  }
+}

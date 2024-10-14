@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { styles } from '../styles/Styles';
@@ -13,8 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginSchema } from '../services/FormValidation';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { saveEmail, signIn } from '../services/authService';
-import InputField from '../components/InputField';
+import { saveEmail, signIn, resetEmail } from '../services/authService';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(true);
@@ -23,6 +23,7 @@ const Login = () => {
 
   const {
     control,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -33,6 +34,22 @@ const Login = () => {
     // Funciones de authService.js
     saveEmail(data);
     signIn(data);
+  };
+
+  const handleResetPassword = async () => {
+    const email = watch('email');
+    if (!email) {
+      Alert.alert('Error', 'Please enter your email first');
+      return;
+    }
+
+    try {
+      await resetEmail(email);
+      Alert.alert('Success', 'Password reset email sent');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Failed to send password reset email');
+    }
   };
 
   return (
@@ -127,7 +144,14 @@ const Login = () => {
               <Text style={styles.textError}>{errors.password.message}</Text>
             )}
           </View>
-          <View style={styles.buttonGroup}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <TouchableOpacity onPress={handleResetPassword}>
+              <Text style={[styles.textTitleSub, { color: 'gray' }]}>
+                Forgot your password?{' '}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.buttonGroup, {marginTop: 10}]}>
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
               style={[
