@@ -67,6 +67,7 @@ const UserList = () => {
             styles.textTitle,
             { alignSelf: 'center', marginVertical: 15 },
           ]}
+          allowFontScaling={false}
         >
           Appointments
         </Text>

@@ -27,8 +27,8 @@ const WelcomeScreen = () => {
             <BlurView intensity={100}>
               <View
                 style={{
-                  width: 350,
-                  height: 370,
+                  width: '90%',
+                  height: '100%',
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderWidth: 1,

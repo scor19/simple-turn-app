@@ -52,7 +52,7 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
               color="black"
               style={{ marginRight: 10 }}
             />
-            <Text style={[styles.patientName]}>{name}</Text>
+            <Text style={[styles.patientName]} allowFontScaling={false}>{name}</Text>
           </View>
           <AntDesign
             name={expanded ? 'down' : 'left'}
@@ -84,7 +84,9 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
               color="black"
               style={{ marginRight: 10 }}
             />
-            <Text style={[styles.patientName]}>{appointment}</Text>
+            <Text style={[styles.patientName]} allowFontScaling={false}>
+              {appointment}
+            </Text>
           </View>
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity
