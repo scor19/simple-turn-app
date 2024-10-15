@@ -147,11 +147,11 @@ const Login = () => {
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <TouchableOpacity onPress={handleResetPassword}>
               <Text style={[styles.textTitleSub, { color: 'gray' }]}>
-                Forgot your password?{' '}
+                Forgotten password?{' '}
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={[styles.buttonGroup, {marginTop: 10}]}>
+          <View style={[styles.buttonGroup, { marginTop: 10 }]}>
             <TouchableOpacity
               onPress={handleSubmit(onSubmit)}
               style={[

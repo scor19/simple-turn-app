@@ -12,7 +12,7 @@ const InputField = ({ name, control, label, placeholder, defaultValue = "", erro
       control={control}
       defaultValue={defaultValue}
       render={({ field }) => (
-        <View style={styles.inputSingle}>
+        <View style={[styles.inputSingle, { paddingRight: 30 }]}>
           <AntDesign name={icon} size={20} color="#50bb52" />
           <TextInput
             placeholder={placeholder}

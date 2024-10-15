@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  ScrollView,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Keyboard } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -93,6 +86,7 @@ const CreatePatientScreen = () => {
           placeholder="Name"
           errors={errors}
           icon="right"
+          style={{ width: '10%' }}
         />
         <InputField
           name="email"
