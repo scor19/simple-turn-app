@@ -163,7 +163,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'white',
     marginVertical: 5,
-  }
+  },
+  noAppointments: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export { styles };

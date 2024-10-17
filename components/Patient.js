@@ -50,7 +50,7 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
               name="user"
               size={24}
               color="black"
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 10, marginTop: 5 }}
             />
             <Text style={[styles.patientName]} allowFontScaling={false}>{name}</Text>
           </View>

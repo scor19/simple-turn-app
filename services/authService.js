@@ -21,6 +21,13 @@ export const signIn = async (data) => {
       Alert.alert('Sign in failed:', 'Incorrect email or password');
     } else if (error.code === 'auth/too-many-requests') {
       Alert.alert('Sign in failed:', 'Too many requests, try again later');
+    } else if (error.code === 'auth/user-not-found') {
+      Alert.alert('Sign in failed:', 'User not found');
+    } else if (error.code === 'auth/network-request-failed') {
+      Alert.alert(
+        'Sign in failed:',
+        'Network request failed, check your internet connection'
+      );
     }
   }
 };
@@ -41,4 +48,4 @@ export const resetEmail = async (email) => {
   } catch (error) {
     console.log(error);
   }
-}
+};

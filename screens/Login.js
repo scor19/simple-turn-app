@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -5,8 +6,8 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
-import React, { useState } from 'react';
 import { styles } from '../styles/Styles';
 import { AntDesign } from '@expo/vector-icons';
 import { useForm, Controller } from 'react-hook-form';
@@ -18,6 +19,7 @@ import { saveEmail, signIn, resetEmail } from '../services/authService';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(true);
+  const [loading, setLoading] = useState(false); // Estado para controlar el ActivityIndicator
 
   const navigation = useNavigation();
 
@@ -30,10 +32,17 @@ const Login = () => {
     resolver: yupResolver(loginSchema), // Especifica el resolver para la validación de los inputs
   });
 
-  const onSubmit = (data) => {
-    // Funciones de authService.js
-    saveEmail(data);
-    signIn(data);
+  const onSubmit = async (data) => {
+    setLoading(true); // Inicia el indicador de carga
+    try {
+      await saveEmail(data);
+      await signIn(data);
+      setLoading(false); // Finaliza el indicador de carga cuando el login se completa
+    } catch (error) {
+      setLoading(false); // En caso de error, también detén el indicador de carga
+      console.log(error);
+      Alert.alert('Error', 'Login failed, please try again');
+    }
   };
 
   const handleResetPassword = async () => {
@@ -151,17 +160,25 @@ const Login = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={[styles.buttonGroup, { marginTop: 10 }]}>
-            <TouchableOpacity
-              onPress={handleSubmit(onSubmit)}
-              style={[
-                styles.inputElevation,
-                { backgroundColor: '#50bb52', padding: 10, borderRadius: 15 },
-              ]}
-            >
-              <Text style={{ color: '#fff', alignSelf: 'center' }}>Login</Text>
-            </TouchableOpacity>
-          </View>
+
+          {/* Indicador de actividad */}
+          {loading ? (
+            <ActivityIndicator size="large" color="#50bb52" />
+          ) : (
+            <View style={[styles.buttonGroup, { marginTop: 10 }]}>
+              <TouchableOpacity
+                onPress={handleSubmit(onSubmit)}
+                style={[
+                  styles.inputElevation,
+                  { backgroundColor: '#50bb52', padding: 10, borderRadius: 15 },
+                ]}
+                disabled={loading} // Desactiva el botón si está cargando
+              >
+                <Text style={{ color: '#fff', alignSelf: 'center' }}>Login</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={[styles.textTitleSub, { color: 'gray' }]}>
               Don't have an account yet?{' '}

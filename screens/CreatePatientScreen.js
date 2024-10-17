@@ -60,7 +60,7 @@ const CreatePatientScreen = () => {
 
   return (
     <KeyboardAwareScrollView style={{ backgroundColor: 'white' }}>
-      <View style={[styles.container, { justifyContent: 'center' }]}>
+      <View style={[styles.container, { justifyContent: 'center', paddingTop: 50 }]}>
         <View
           style={{
             flexWrap: 'wrap',
