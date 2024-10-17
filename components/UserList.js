@@ -70,24 +70,20 @@ const UserList = () => {
       <View
         style={{
           flexWrap: 'wrap',
-          flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
-          marginTop: 20,
+          marginTop: '15%',
         }}
       >
         <AntDesign
-          name="profile"
-          size={40}
+          name="book"
+          size={96}
           color="#50bb52"
           style={[styles.iconLeft]}
         />
         <Text
-          style={[
-            styles.textTitle,
-            { alignSelf: 'center', marginVertical: 15 },
-          ]}
+          style={[styles.textTitle, { alignSelf: 'center', marginBottom: 10 }]}
           allowFontScaling={false}
         >
           Appointments
@@ -95,11 +91,7 @@ const UserList = () => {
       </View>
       {isLoading && <TurnLoader />}
       {!isLoading && patients.length === 0 && (
-        <Text
-          style={styles.noAppointments}
-        >
-          You don't have appointments!
-        </Text>
+        <Text style={styles.noAppointments}>You don't have appointments!</Text>
       )}
       {patients.map((patient) => (
         <Patient key={patient.id} {...patient} />

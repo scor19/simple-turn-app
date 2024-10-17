@@ -59,92 +59,98 @@ const CreatePatientScreen = () => {
   }, [formState, reset]);
 
   return (
-    <KeyboardAwareScrollView style={{ backgroundColor: 'white' }}>
-      <View style={[styles.container, { justifyContent: 'center', paddingTop: 50 }]}>
-        <View
-          style={{
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}
-        >
-          <AntDesign name="adduser" size={96} color="#50bb52" />
-          <Text
-            style={[
-              styles.textTitle,
-              { alignSelf: 'center', marginBottom: 10 },
-            ]}
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      style={{ backgroundColor: 'white' }}
+      behavior="padding"
+    >
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={[styles.container, { justifyContent: 'center' }]}>
+          <View
+            style={{
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+            }}
           >
-            Patient
-          </Text>
-        </View>
-        <InputField
-          name="name"
-          control={control}
-          label="Name"
-          placeholder="Name"
-          errors={errors}
-          icon="right"
-          style={{ width: '10%' }}
-        />
-        <InputField
-          name="email"
-          control={control}
-          label="Email (optional)"
-          placeholder="Email (optional)"
-          errors={errors}
-          icon="right"
-        />
-        <InputField
-          name="phone"
-          control={control}
-          label="Phone number"
-          placeholder="Phone number"
-          errors={errors}
-          icon="right"
-        />
-        <DatePicker
-          name="appointment"
-          control={control}
-          label="Appointment date"
-          placeholder="Select date"
-          errors={errors}
-        />
-        <InputField
-          name="reason"
-          control={control}
-          label="Appointment reason"
-          placeholder="Appointment reason"
-          errors={errors}
-          icon="right"
-        />
-        <InputField
-          name="record"
-          control={control}
-          label="Record (optional)"
-          placeholder="Record (optional)"
-          errors={errors}
-          icon="right"
-        />
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity
-            onPress={handleSubmit(onSubmit)}
-            style={[
-              styles.inputElevation,
-              { backgroundColor: '#50bb52', padding: 10, borderRadius: 15 },
-            ]}
-          >
+            <AntDesign name="adduser" size={96} color="#50bb52" />
             <Text
-              style={{
-                color: '#fff',
-                alignSelf: 'center',
-                fontWeight: 'bold',
-              }}
+              style={[
+                styles.textTitle,
+                { alignSelf: 'center', marginBottom: 10 },
+              ]}
             >
-              Save
+              Add patient
             </Text>
-          </TouchableOpacity>
+          </View>
+          <InputField
+            name="name"
+            control={control}
+            label="Name"
+            placeholder="Name"
+            errors={errors}
+            icon="right"
+            style={{ width: '10%' }}
+          />
+          <InputField
+            name="email"
+            control={control}
+            label="Email (optional)"
+            placeholder="Email (optional)"
+            errors={errors}
+            icon="right"
+          />
+          <InputField
+            name="phone"
+            control={control}
+            label="Phone number"
+            placeholder="Phone number"
+            errors={errors}
+            icon="right"
+          />
+          <DatePicker
+            name="appointment"
+            control={control}
+            label="Appointment date"
+            placeholder="Select date"
+            errors={errors}
+          />
+          <InputField
+            name="reason"
+            control={control}
+            label="Appointment reason"
+            placeholder="Appointment reason"
+            errors={errors}
+            icon="right"
+          />
+          <InputField
+            name="record"
+            control={control}
+            label="Record (optional)"
+            placeholder="Record (optional)"
+            errors={errors}
+            icon="right"
+          />
+          <View style={styles.buttonGroup}>
+            <TouchableOpacity
+              onPress={handleSubmit(onSubmit)}
+              style={[
+                styles.inputElevation,
+                { backgroundColor: '#50bb52', padding: 10, borderRadius: 15 },
+              ]}
+            >
+              <Text
+                style={{
+                  color: '#fff',
+                  alignSelf: 'center',
+                  fontWeight: 'bold',
+                }}
+              >
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </KeyboardAwareScrollView>

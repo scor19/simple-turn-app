@@ -34,17 +34,26 @@ const WelcomeScreen = () => {
                   borderWidth: 1,
                   borderRadius: 10,
                   borderColor: '#CCCCCC',
-                  padding: 10,
+                  padding: 15,
+                  gap: 20,
                 }}
               >
-                <Text
-                  style={[
-                    styles.textTitle,
-                    { color: '#333333', marginBottom: 15 },
-                  ]}
-                >
-                  Get started{' '}
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text
+                    style={[
+                      styles.textTitle,
+                      { color: '#333333', marginBottom: 15 },
+                    ]}
+                  >
+                    Get started{' '}
+                  </Text>
+                  <AntDesign
+                    name="caretright"
+                    size={24}
+                    color="#50bb52"
+                    style={{ paddingBottom: 5 }}
+                  />
+                </View>
                 <Text style={[styles.textTitleSub, { color: '#333333' }]}>
                   This app is designed for you to have easy control over your
                   patients' appointments.
@@ -63,7 +72,7 @@ const WelcomeScreen = () => {
                       styles.inputElevation,
                       {
                         backgroundColor: '#50bb52',
-                        padding: 10,
+                        padding: 15,
                         borderRadius: 15,
                         flexDirection: 'row',
                       },
@@ -72,12 +81,12 @@ const WelcomeScreen = () => {
                     <AntDesign
                       name="logout"
                       size={24}
-                      color="#333333"
+                      color="white"
                       style={styles.iconLeft}
                     />
                     <Text
                       style={{
-                        color: '#333333',
+                        color: 'white',
                         alignSelf: 'center',
                         fontWeight: 'bold',
                       }}

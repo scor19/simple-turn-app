@@ -75,6 +75,7 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
+            flexWrap: 'wrap',
           }}
         >
           <View style={{ flexDirection: 'row' }}>
