@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     backgroundColor: 'white',
-    marginVertical: 5,
   },
   noAppointments: {
     fontSize: 20,

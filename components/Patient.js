@@ -49,25 +49,41 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
             <AntDesign
               name="user"
               size={24}
-              color="black"
+              color="#50bb52"
               style={{ marginRight: 10, marginTop: 5 }}
             />
-            <Text style={[styles.patientName]} allowFontScaling={false}>{name}</Text>
+            <Text
+              style={[
+                styles.patientName,
+                { textDecorationLine: 'underline', alignSelf: 'center' },
+              ]}
+              allowFontScaling={false}
+            >
+              {name}
+            </Text>
           </View>
           <AntDesign
             name={expanded ? 'down' : 'left'}
             size={24}
             color="black"
-            style={styles.icon}
+            style={[styles.icon, { borderWidth: 0 }]}
           />
         </View>
         <View style={{ marginTop: 5, marginBottom: 10 }}>
           {expanded ? null : <Text style={styles.patientDetail}>{reason}</Text>}
           <Collapsible collapsed={!expanded}>
-            <Text style={styles.patientDetail}>{email}</Text>
+            <Text style={styles.textPlaceholder}>Email</Text>
+            <Text style={styles.patientDetail}>
+              {email ? email : 'No email'}
+            </Text>
+            <Text style={styles.textPlaceholder}>Phone</Text>
             <Text style={styles.patientDetail}>{phone}</Text>
+            <Text style={styles.textPlaceholder}>Reason</Text>
             <Text style={styles.patientDetail}>{reason}</Text>
-            <Text style={styles.patientDetail}>{record}</Text>
+            <Text style={styles.textPlaceholder}>Record</Text>
+            <Text style={styles.patientDetail}>
+              {record ? record : 'No record'}
+            </Text>
           </Collapsible>
         </View>
         <View
@@ -82,7 +98,7 @@ const Patient = ({ id, appointment, email, name, phone, reason, record }) => {
             <AntDesign
               name="calendar"
               size={24}
-              color="black"
+              color="#50bb52"
               style={{ marginRight: 10 }}
             />
             <Text style={[styles.patientName]} allowFontScaling={false}>

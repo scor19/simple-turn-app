@@ -1,7 +1,6 @@
 import * as yup from 'yup';
 
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp = /^[0-9]*$/;
 // Esquema de validación de formulario en yup
 export const patientSchema = yup.object().shape({
   name: yup
@@ -11,6 +10,8 @@ export const patientSchema = yup.object().shape({
   email: yup.string().email('Enter a valid email').optional(),
   phone: yup
     .string()
+    .min(4, 'Number is too short')
+    .max(15, 'Number is too long')
     .matches(phoneRegExp, 'Phone number is not valid')
     .required('A phone number is required')
     .typeError('Please, enter a number'),
@@ -24,6 +25,8 @@ export const editSchema = yup.object().shape({
   reason: yup.string().required('Please, enter an appointment reason'),
   phone: yup
     .string()
+    .min(4, 'Number is too short')
+    .max(15, 'Number is too long')
     .matches(phoneRegExp, 'Phone number is not valid')
     .required('A phone number is required')
     .typeError('Please, enter a number'),

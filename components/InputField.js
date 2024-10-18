@@ -4,7 +4,15 @@ import { Controller } from 'react-hook-form';
 import { AntDesign } from '@expo/vector-icons';
 import { styles } from '../styles/Styles';
 
-const InputField = ({ name, control, label, placeholder, defaultValue = "", errors, icon }) => (
+const InputField = ({
+  name,
+  control,
+  label,
+  placeholder,
+  defaultValue = '',
+  errors,
+  icon,
+}) => (
   <View>
     <Text style={styles.textPlaceholder}>{label}</Text>
     <Controller
