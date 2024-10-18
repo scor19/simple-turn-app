@@ -26,6 +26,7 @@ This application allows medical professionals to efficiently manage their appoin
 
 ## Notes
 
+- **Android Emulation**: Make sure you have an android emulator set up in your system PATH for Expo, in case you don't, you can use your android device with Expo Go to scan the generated QR and use the development build on your phone.
 - **Modularization**: The modularization of the application is a work in progress and may require further refinement for better organization and scalability.
 
 Feel free to explore and use the Medical Appointment Management App for your practice or project needs. Contributions and feedback are welcome!
